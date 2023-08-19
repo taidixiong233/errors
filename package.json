@@ -4,6 +4,14 @@
   "description": "",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
+  "homepage": "https://github.com/taidixiong233/errors#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/taidixiong233/errors.git"
+  },
+  "bugs": {
+    "url": "https://github.com/taidixiong233/errors/issues"
+  },
   "scripts": {
     "lint": "eslint src",
     "fix": "eslint src --fix",
