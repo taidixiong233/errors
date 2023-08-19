@@ -1,0 +1,21 @@
+{
+  "name": "errors",
+  "version": "0.0.1",
+  "description": "",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "scripts": {
+    "lint": "eslint src",
+    "fix": "eslint src --fix",
+    "build": "npm run lint && tsc",
+    "clean": "node -e \"console.log('if used Linux, please use command that be named rm or other command to remove ./dist file dir.');\" && del /s /q .\\dist\\* /f >nul && rmdir /q .\\dist >nul"
+  },
+  "author": "taidixiong233",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.5.1",
+    "@typescript-eslint/eslint-plugin": "^6.4.0",
+    "@typescript-eslint/parser": "^6.4.0",
+    "eslint": "^8.47.0"
+  }
+}
