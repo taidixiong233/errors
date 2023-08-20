@@ -31,7 +31,7 @@ export default class Error extends EventEmitter {
     if (typeof log != "string") log = JSON.stringify(log);
     const con = `[${
       level == "log" ? "LOG" : "ERROR"
-    }][${this.date.getFullYear()}-${this.date.getMonth()}-${this.date.getDate()}T${this.date.getHours()}:${this.date.getMinutes()}:${this.date.getSeconds()}:${this.date.getMilliseconds()}] ${log}`;
+    }][${this.date.getFullYear()}-${this.date.getMonth()}-${this.date.getDate()}T${this.date.getHours()}:${this.date.getMinutes()}:${this.date.getSeconds()}:${this.date.getMilliseconds()}] ${log} \n`;
 
     console.log(con);
 
@@ -43,13 +43,22 @@ export default class Error extends EventEmitter {
 
   public postError(errorName: string, ...args: unknown[]): Error {
     this.emit(errorName, args);
-    this.printLog(`${errorName}:${JSON.stringify(args)}`, "error");
+    if (args.length === 0) {
+      this.printLog(errorName, "error");
+    } else {
+      this.printLog(`${errorName}:${JSON.stringify(args)}`, "error");
+    }
+
     return this;
   }
 
   public postLog(errorName: string, ...args: unknown[]): Error {
     this.emit(errorName, args);
-    this.printLog(`${errorName}:${JSON.stringify(args)}`, "log");
+    if (args.length === 0) {
+      this.printLog(errorName, "log");
+    } else {
+      this.printLog(`${errorName}:${JSON.stringify(args)}`, "log");
+    }
     return this;
   }
 

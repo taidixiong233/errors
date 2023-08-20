@@ -1,6 +1,6 @@
 {
   "name": "tderrors",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -25,5 +25,8 @@
     "@typescript-eslint/eslint-plugin": "^6.4.0",
     "@typescript-eslint/parser": "^6.4.0",
     "eslint": "^8.47.0"
+  },
+  "dependencies": {
+    "typescript": "^5.1.6"
   }
 }
