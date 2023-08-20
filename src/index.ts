@@ -1,6 +1,7 @@
 import * as path from "path";
 import * as fs from "fs";
 import { EventEmitter } from "events";
+import { nextTick } from "process";
 
 const FS = Symbol("FS");
 const PATH = Symbol("PATH");
@@ -41,25 +42,22 @@ export default class Error extends EventEmitter {
     );
   }
 
-  public postError(errorName: string, ...args: unknown[]): Error {
-    this.emit(errorName, args);
+  public async postError(errorName: string, ...args: unknown[]): Promise<void> {
     if (args.length === 0) {
       this.printLog(errorName, "error");
     } else {
       this.printLog(`${errorName}:${JSON.stringify(args)}`, "error");
     }
-
-    return this;
+    nextTick(() => this.emit(errorName, args));
   }
 
-  public postLog(errorName: string, ...args: unknown[]): Error {
-    this.emit(errorName, args);
+  public async postLog(errorName: string, ...args: unknown[]): Promise<void> {
     if (args.length === 0) {
       this.printLog(errorName, "log");
     } else {
       this.printLog(`${errorName}:${JSON.stringify(args)}`, "log");
     }
-    return this;
+    nextTick(() => this.emit(errorName, args));
   }
 
   private log_file_path!: string;
