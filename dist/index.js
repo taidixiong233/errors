@@ -54,18 +54,28 @@ class Error extends events_1.EventEmitter {
     printLog(log, level) {
         if (typeof log != "string")
             log = JSON.stringify(log);
-        const con = `[${level == "log" ? "LOG" : "ERROR"}][${this.date.getFullYear()}-${this.date.getMonth()}-${this.date.getDate()}T${this.date.getHours()}:${this.date.getMinutes()}:${this.date.getSeconds()}:${this.date.getMilliseconds()}] ${log}`;
+        const con = `[${level == "log" ? "LOG" : "ERROR"}][${this.date.getFullYear()}-${this.date.getMonth()}-${this.date.getDate()}T${this.date.getHours()}:${this.date.getMinutes()}:${this.date.getSeconds()}:${this.date.getMilliseconds()}] ${log} \n`;
         console.log(con);
         this[FS].appendFileSync(this[`${level == "log" ? "log" : "error"}_file_path`], con);
     }
     postError(errorName, ...args) {
         this.emit(errorName, args);
-        this.printLog(`${errorName}:${JSON.stringify(args)}`, "error");
+        if (args.length === 0) {
+            this.printLog(errorName, "error");
+        }
+        else {
+            this.printLog(`${errorName}:${JSON.stringify(args)}`, "error");
+        }
         return this;
     }
     postLog(errorName, ...args) {
         this.emit(errorName, args);
-        this.printLog(`${errorName}:${JSON.stringify(args)}`, "log");
+        if (args.length === 0) {
+            this.printLog(errorName, "log");
+        }
+        else {
+            this.printLog(`${errorName}:${JSON.stringify(args)}`, "log");
+        }
         return this;
     }
     loop() {
