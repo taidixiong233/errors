@@ -54,9 +54,9 @@ class Error extends events_1.EventEmitter {
     printLog(log, level) {
         if (typeof log != "string")
             log = JSON.stringify(log);
-        const con = `[${level == "log" ? "LOG" : "ERROR"}][${this.date.getFullYear()}-${this.date.getMonth()}-${this.date.getDate()}T${this.date.getHours()}:${this.date.getMinutes()}:${this.date.getSeconds()}:${this.date.getMilliseconds()}] ${log} \n`;
+        const con = `[${level == "log" ? "LOG" : "ERROR"}][${this.date.getFullYear()}-${this.date.getMonth()}-${this.date.getDate()}T${this.date.getHours()}:${this.date.getMinutes()}:${this.date.getSeconds()}:${this.date.getMilliseconds()}] ${log}`;
         console.log(con);
-        this[FS].appendFileSync(this[`${level == "log" ? "log" : "error"}_file_path`], con);
+        this[FS].appendFileSync(this[`${level == "log" ? "log" : "error"}_file_path`], `${con}\n`);
     }
     postError(errorName, ...args) {
         this.emit(errorName, args);
