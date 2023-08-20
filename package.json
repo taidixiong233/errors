@@ -1,6 +1,6 @@
 {
   "name": "tderrors",
-  "version": "0.0.3",
+  "version": "0.0.3b",
   "description": "",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
