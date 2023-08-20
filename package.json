@@ -17,7 +17,7 @@
     "fix": "eslint src --fix",
     "build": "npm run lint && tsc",
     "clean": "node -e \"console.log('if used Linux, please use command that be named rm or other command to remove ./dist file dir.');\" && del /s /q .\\dist\\* /f >nul && rmdir /q .\\dist >nul",
-    "publish": "npm run build && npm publish"
+    "publishtonpm": "npm run build && npm publish"
   },
   "author": "taidixiong233",
   "license": "ISC",
