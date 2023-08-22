@@ -77,7 +77,7 @@ export default class Error extends EventEmitter {
   private async loop(): Promise<void> {
     if (this.date.getDay() != new Date().getDay()) {
       this.date = new Date();
-      this.init_address();
+      setTimeout(this.init_address, 10);
       return new Promise((r) => r());
     } else {
       await this.sleep();
