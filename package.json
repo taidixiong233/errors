@@ -1,0 +1,34 @@
+{
+  "name": "tderrors",
+  "version": "0.0.6",
+  "description": "",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "homepage": "https://github.com/taidixiong233/errors#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/taidixiong233/errors.git"
+  },
+  "bugs": {
+    "url": "https://github.com/taidixiong233/errors/issues"
+  },
+  "scripts": {
+    "lint": "eslint src",
+    "fix": "eslint src --fix",
+    "build": "npm run lint && tsc",
+    "clean": "node -e \"console.log('if used Linux, please use command that be named rm or other command to remove ./dist file dir.');\" && del /s /q .\\dist\\* /f >nul && rmdir /q .\\dist >nul",
+    "publishtonpm": "npm run build && npm publish",
+    "test": "npm run build && ts-node ./test/index.ts"
+  },
+  "author": "taidixiong233",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.5.1",
+    "@typescript-eslint/eslint-plugin": "^6.4.0",
+    "@typescript-eslint/parser": "^6.4.0",
+    "eslint": "^8.47.0"
+  },
+  "dependencies": {
+    "typescript": "^5.1.6"
+  }
+}
