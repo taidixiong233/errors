@@ -11,7 +11,10 @@ export default class Error extends EventEmitter {
   private [PATH] = path;
 
   private init_error_file(): Error {
-    const name = `[ERROR]-${this.date.getFullYear()}${this.date.getMonth()}${this.date.getDate()}.log`;
+    const name = `[ERROR]-${this.date.getFullYear()}${this.Add0x20(
+      this.date.getMonth() + 1,
+      2
+    )}${this.Add0x20(this.date.getDate(), 2)}.log`;
     this.error_file_path = this[PATH].join(this.file_root, name);
 
     this.printLog("错误日志追踪文件初始化结束", "error");
@@ -19,7 +22,10 @@ export default class Error extends EventEmitter {
   }
 
   private init_log_file(): Error {
-    const name = `[LOG]-${this.date.getFullYear()}${this.date.getMonth()}${this.date.getDate()}.log`;
+    const name = `[LOG]-${this.date.getFullYear()}${this.Add0x20(
+      this.date.getMonth() + 1,
+      2
+    )}${this.Add0x20(this.date.getDate(), 2)}.log`;
     this.log_file_path = this[PATH].join(this.file_root, name);
 
     this.printLog("日志追踪文件初始化结束", "log");
@@ -29,10 +35,20 @@ export default class Error extends EventEmitter {
   private printLog(log: object, level: "log" | "error"): void;
   private printLog(log: string, level: "log" | "error"): void;
   private printLog(log: string | object, level: "log" | "error"): void {
+    const time = new Date();
     if (typeof log != "string") log = JSON.stringify(log);
     const con = `[${
-      level == "log" ? "LOG" : "ERROR"
-    }][${this.date.getFullYear()}-${this.date.getMonth()}-${this.date.getDate()}T${this.date.getHours()}:${this.date.getMinutes()}:${this.date.getSeconds()}:${this.date.getMilliseconds()}] ${log}`;
+      level == "log" ? " LOG " : "ERROR"
+    }][${time.getFullYear()}-${this.Add0x20(
+      time.getMonth() + 1,
+      2
+    )}-${this.Add0x20(time.getDate(), 2)}T${this.Add0x20(
+      time.getHours(),
+      2
+    )}:${this.Add0x20(time.getMinutes(), 2)}:${this.Add0x20(
+      time.getSeconds(),
+      2
+    )}:${this.Add0x20(time.getMilliseconds(), 3)}] ${log}`;
 
     console.log(con);
 
@@ -87,6 +103,11 @@ export default class Error extends EventEmitter {
 
   private init_address(): Error {
     let address = this[PATH].join(this.log_file_root);
+
+    if (!fs.existsSync(this.log_file_root)) {
+      fs.mkdirSync(this.log_file_root);
+    }
+
     if (!this[FS].statSync(address).isDirectory()) {
       address = this[PATH].join(this.log_file_root, "..");
     }
@@ -104,5 +125,13 @@ export default class Error extends EventEmitter {
   constructor(private log_file_root: string) {
     super();
     this.init_address();
+  }
+
+  private Add0x20(str: string | number, length: number): string {
+    let ret = String(str);
+    for (let i = 0; i < length - ret.length; ++i) {
+      ret = "0" + ret;
+    }
+    return ret;
   }
 }
