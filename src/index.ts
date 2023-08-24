@@ -2,19 +2,24 @@ import * as path from "path";
 import * as fs from "fs";
 import { EventEmitter } from "events";
 import { nextTick } from "process";
+import nodeschedule from "node-schedule";
 
 const FS = Symbol("FS");
 const PATH = Symbol("PATH");
+const NODESCHEDULE = Symbol("NODESCHEDULE");
 
 export default class Error extends EventEmitter {
   private [FS] = fs;
   private [PATH] = path;
+  private [NODESCHEDULE] = nodeschedule;
 
+  //private tmp = 1;
   private init_error_file(): Error {
-    const name = `[ERROR]-${this.date.getFullYear()}${this.Add0x20(
-      this.date.getMonth() + 1,
+    const time = new Date();
+    const name = `[ERROR]-${time.getFullYear()}${this.Add0x20(
+      time.getMonth() + 1,
       2
-    )}${this.Add0x20(this.date.getDate(), 2)}.log`;
+    )}${this.Add0x20(time.getDate(), 2)}.log`;
     this.error_file_path = this[PATH].join(this.file_root, name);
 
     this.printLog("错误日志追踪文件初始化结束", "error");
@@ -22,10 +27,11 @@ export default class Error extends EventEmitter {
   }
 
   private init_log_file(): Error {
-    const name = `[LOG]-${this.date.getFullYear()}${this.Add0x20(
-      this.date.getMonth() + 1,
+    const time = new Date();
+    const name = `[LOG]-${time.getFullYear()}${this.Add0x20(
+      time.getMonth() + 1,
       2
-    )}${this.Add0x20(this.date.getDate(), 2)}.log`;
+    )}${this.Add0x20(time.getDate(), 2)}.log`;
     this.log_file_path = this[PATH].join(this.file_root, name);
 
     this.printLog("日志追踪文件初始化结束", "log");
@@ -80,25 +86,11 @@ export default class Error extends EventEmitter {
   private error_file_path!: string;
   private file_root!: string;
 
-  private date = new Date();
-
-  private sleep = async (ms = 1000): Promise<void> => {
-    return new Promise<void>((r) => {
-      setTimeout(() => {
-        r();
-      }, ms);
+  private Init_updata(): Error {
+    this[NODESCHEDULE].scheduleJob("0 0 0 * * *", () => {
+      this.init_address();
     });
-  };
-
-  private async loop(): Promise<void> {
-    if (this.date.getDay() != new Date().getDay()) {
-      this.date = new Date();
-      setTimeout(this.init_address, 10);
-      return new Promise((r) => r());
-    } else {
-      await this.sleep();
-      this.loop();
-    }
+    return this;
   }
 
   private init_address(): Error {
@@ -116,15 +108,14 @@ export default class Error extends EventEmitter {
 
     this.init_error_file();
     this.init_log_file();
-
-    this.loop();
-
+    //this.tmp++;
     return this;
   }
 
   constructor(private log_file_root: string) {
     super();
     this.init_address();
+    this.Init_updata();
   }
 
   private Add0x20(str: string | number, length: number): string {
