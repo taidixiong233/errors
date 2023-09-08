@@ -126,3 +126,5 @@ export default class Error extends EventEmitter {
     return ret;
   }
 }
+
+exports.Error = Error
