@@ -127,4 +127,4 @@ export default class Error extends EventEmitter {
   }
 }
 
-exports.Error = Error
+export const TDError = Error
