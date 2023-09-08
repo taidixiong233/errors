@@ -8,13 +8,13 @@ const FS = Symbol("FS");
 const PATH = Symbol("PATH");
 const NODESCHEDULE = Symbol("NODESCHEDULE");
 
-export default class Error extends EventEmitter {
+export default class _TDError extends EventEmitter {
   private [FS] = fs;
   private [PATH] = path;
   private [NODESCHEDULE] = nodeschedule;
 
   //private tmp = 1;
-  private init_error_file(): Error {
+  private init_error_file(): _TDError {
     const time = new Date();
     const name = `[ERROR]-${time.getFullYear()}${this.Add0x20(
       time.getMonth() + 1,
@@ -26,7 +26,7 @@ export default class Error extends EventEmitter {
     return this;
   }
 
-  private init_log_file(): Error {
+  private init_log_file(): _TDError {
     const time = new Date();
     const name = `[LOG]-${time.getFullYear()}${this.Add0x20(
       time.getMonth() + 1,
@@ -86,14 +86,14 @@ export default class Error extends EventEmitter {
   private error_file_path!: string;
   private file_root!: string;
 
-  private Init_updata(): Error {
+  private Init_updata(): _TDError {
     this[NODESCHEDULE].scheduleJob("0 0 0 * * *", () => {
       this.init_address();
     });
     return this;
   }
 
-  private init_address(): Error {
+  private init_address(): _TDError {
     let address = this[PATH].join(this.log_file_root);
 
     if (!fs.existsSync(this.log_file_root)) {
@@ -127,4 +127,4 @@ export default class Error extends EventEmitter {
   }
 }
 
-export const TDError = Error
+export const TDError = _TDError;
